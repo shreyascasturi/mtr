@@ -1,0 +1,25 @@
+-- The hangman game will ask users
+-- for a choice of word or a word from a dictionary API,
+-- and the user will have to fill in the letters of the word.
+-- The user will have 5 chances for incorrect letters; if the user loses all chances they lose the game.
+-- DESIGN
+-- the parts of the design:
+-- 1. given a character, check if it is in the string.
+-- 2. If the character is not in the string, then decrement a counter for remaining chances.
+-- 3. Related -> draw a hangman in successive steps.
+-- 1a. Draw head and stick torso/body
+-- 1b. Draw right arm
+-- 1c. Draw left arm.
+-- 1d. Draw right leg
+-- 1e. Draw left leg.
+
+-- LOGIC OF STATE
+-- How do we represent the "state" of the game?
+-- Naturally, we need a tuple. Let the tuple be 
+-- State = (remaining chances/hangman sketch, WordItself, UserFacingString)
+-- The UserFacingString will have dashes to represent unfilled/unknown characters.
+-- When a guess is correct (the letter is in the string), the UserFacingString will update the location
+-- that contains the character to display the character. The WordItself will substitute the actual letter
+-- to be a dash.
+
+-- Over time, this means the WordItself will become only dashes, and the UserFacingString will become the real word.
