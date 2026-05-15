@@ -16,8 +16,11 @@ int main() {
 		printf("total mem failure\n");
 		exit(1);
 	}
+	print("created mem array, creating track arr\n");
 
 	struct page_track** track_arr = create_track_arr(mem);
+	print("created track_arr array\n");
+	
 	printf("freeing memory\n");
 	free(mem);
 	printf("freed memory\n");
@@ -25,6 +28,4 @@ int main() {
 	printf("freeing page track arr");
 	free_page_track_arr(track_arr);
 	printf("freed page_track_arr, exiting");
-	
-
 }

@@ -17,7 +17,7 @@ struct page_track {
 struct page_track** create_track_arr(int8_t* starting_addr) {
 	/** 
 	 * the array contains a series of page track ptrs
-	 * an array is a series of addresses
+	 * an array is a series of addresses that have some contents at each address.
 	 * thus each address contains another address
 	 * the type of the array addr is struct page_track**
 	 * dereferencing an array addr gives you the struct page_track* ptr.
@@ -35,6 +35,10 @@ struct page_track** create_track_arr(int8_t* starting_addr) {
 		
 		// malloc page_track_ptr, set values
 		struct page_track* page_track_ptr = malloc(sizeof(struct page_track));
+		if (page_track_ptr == NULL) {
+			printf("page_Track_ptr alloc failed!\n ");
+			exit(1);
+		}
 		page_track_ptr->dirty_bit_ = false;
 		page_track_ptr->proc_ptr_ = NULL;
 		
@@ -44,8 +48,10 @@ struct page_track** create_track_arr(int8_t* starting_addr) {
 		// we are setting the contents of the address 
 		// to be a ptr to a page_track_struct
 		// thus, we must do *(page_track_arr + offset)
-		int page_track_offset = i * sizeof(struct page_track*);
-		*(page_track_arr + page_track_offset) = page_track_ptr;
+		// alternatively you can do page_track_arr[i] = page_track_ptr;
+		// note you can do the offset here, but can't do it in free_page_track_arr...
+		// be consistent, and use `i` and do it this way.
+		*(page_track_arr + i) = page_track_ptr;		
 	}
 	return page_track_arr;
 
@@ -57,9 +63,15 @@ void free_page_track_arr(struct page_track** track_arr) {
 	 */
 	for (int i = 0; i < NUM_PAGES; i++) {
 		// free each individual page_track struct
-		printf("%d", i);
-		printf("\n");
-		struct page_track* track = *(track_arr + (i * sizeof(struct page_track*)));
+		//printf("freeing page track arr index: %d", i);
+		//printf("\n");
+
+		// seems like you cannot do *(track_arr + offset) (for track = deref addr)
+		// without causing
+		// a segfault, yet you can do in the allocation method above
+		// *(page_track_arr + offset). Why?
+		// keep consistent and use `i`.
+		struct page_track* track = *(track_arr + i);
 		free(track);
 	}
 	free(track_arr);
