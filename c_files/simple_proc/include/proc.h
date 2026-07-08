@@ -4,10 +4,17 @@
 #include <stdio.h>
 #include <stdbool.h>
 struct proc {
-	int64_t* uuid_;
+	
+	// a uuid
+	int64_t uuid_;
+
 	char* name_;
-	int64_t* duration_;
-	int8_t* memptr_;
+	
+	// how long the process should be
+	int64_t duration_;
+	
+	// the memory itself
+	void* memptr_;
 };
 
 // create the proc struct ptr given a name and duration
